@@ -1,0 +1,45 @@
+# ----- history (small but useful) -----
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+HISTSIZE=20000
+SAVEHIST=20000
+setopt SHARE_HISTORY INC_APPEND_HISTORY HIST_IGNORE_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
+
+# ----- key bindings -----
+bindkey -e
+
+# ----- completion -----
+zstyle :compinstall filename "${ZDOTDIR:-$HOME}/.zshrc"
+fpath=(~/.zsh/completions $fpath)
+autoload -Uz compinit
+zmodload zsh/complist
+compinit -i
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'r:|[._-]=* r:|=*'
+
+# ----- gpg/ssh relay (drduh-style) -----
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+export GPG_TTY="$(tty)"
+gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1 || true
+
+# ----- tiny quality-of-life -----
+autoload -Uz colors && colors
+alias ll='ls -alF --color=auto'
+alias la='ls -A'
+alias l='ls -CF'
+
+# --- Neovim defaults ---
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR=nvim           # used by many CLIs
+  export VISUAL=nvim           # used by things that prefer a GUI editor var
+  export SUDO_EDITOR=nvim      # used by sudo -e / visudo
+  export MANPAGER='nvim +Man!' # pretty man pages in nvim (optional)
+
+  alias vi='nvim'
+  alias vim='nvim'
+  alias vimdiff='nvim -d'
+fi
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# ----- starship prompt -----
+eval "$(starship init zsh)"

@@ -1,0 +1,8 @@
+# This is Git's per-user configuration file.
+[user]
+	email = cyberiumdev@gmail.com
+	name = CyberiumShadow
+	signingkey = 0x8139368D4932F051
+# Please adapt and uncomment the following lines:
+#	name = 
+#	email = cyberium@CyberiumPC.localdomain
